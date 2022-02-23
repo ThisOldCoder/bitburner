@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'json'
+
+files = Dir['dist/**/*.js'].map{|file| file.gsub(/dist\//, '')}
+File.open('file-list.json', 'w'){|file| file.write("#{files.to_json}\n")}
+
+puts "Wrote #{files.size} files to file-list.json"
