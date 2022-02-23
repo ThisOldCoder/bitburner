@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { NS, ProcessInfo, Server } from '@ns'
 
 // Facade for NS server object. Responsible for preparing the server to be 
@@ -22,23 +23,18 @@ export class HackableServer {
 		}
 	}
 
-	prepareServer() {
+	prepareServer(): void {
 		this.ns.tprintf('threads: ' + this.threadCountToWeaken());
 	}
 
-	threadCountToWeaken() {
-		let securityLevel = this.ns.getServerSecurityLevel(this.targetName);
-		let minSecurityLevel = this.ns.getServerMinSecurityLevel(this.targetName);
-		let securityDiff = securityLevel - minSecurityLevel;
+	threadCountToWeaken(): number {
+		const securityLevel = this.ns.getServerSecurityLevel(this.targetName);
+		const minSecurityLevel = this.ns.getServerMinSecurityLevel(this.targetName);
+		const securityDiff = securityLevel - minSecurityLevel;
 		return securityDiff / this.weakenFactor();
 	}
 	
-	weakenFactor() {
+	weakenFactor(): number {
 		return this.ns.weakenAnalyze(1, this.cores);
 	}
-}
-
-export async function main(ns: NS) {
-	const hacker = new HackableServer(ns, 'the-hub');
-	hacker.prepareServer();
 }
