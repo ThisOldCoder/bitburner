@@ -2,7 +2,7 @@ import { NS } from '@ns'
 import { Scanner } from '/scripts/scanner'
 
 export async function main(ns : NS) : Promise<void> {
-    if (args.find(element => element === 'scanner'))
+    if (ns.args.find(element => element === 'scanner'))
         testScanner(ns);
 }
 
