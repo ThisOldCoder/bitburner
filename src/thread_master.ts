@@ -1,4 +1,5 @@
 import { NS } from '@ns'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { notStrictEqual } from 'assert';
 
 type ThreadAssignment = {
@@ -110,7 +111,8 @@ export class ThreadMaster {
 
     // Copy script to server.
     async deployScript(serverName: string): Promise<void> {
-        await this.ns.scp(this.scriptPath, serverName);
+        if (!this.ns.fileExists(this.scriptPath, serverName))
+            await this.ns.scp(this.scriptPath, serverName);
     }
 
     // Initiate scripts on host with target and thread count.
