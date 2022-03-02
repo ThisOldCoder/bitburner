@@ -4,7 +4,7 @@ import { TargetServer } from '/target_server';
 export class Scanner {
     ns;			                            // Netscript handle
     serverList = Array<TargetServer>();     // Periodically updated list of servers
-    fourHours = 14400000;             // 4 hours in milliseconds
+    fourHours = 14400000;                   // 4 hours in milliseconds
 
     constructor (ns: NS) {
         this.ns = ns;
