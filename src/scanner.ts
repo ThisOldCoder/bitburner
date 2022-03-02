@@ -1,5 +1,5 @@
 import { NS } from '@ns'
-import { TargetServer } from '/target_server';
+import { TargetServer } from '/scripts/target_server'
 
 export class Scanner {
     ns;			                            // Netscript handle

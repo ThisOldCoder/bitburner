@@ -1,8 +1,8 @@
 import { NS } from '@ns'
-import { Scanner } from '/scanner'
+import { Scanner } from '/scripts/scanner'
 
 export async function main(ns : NS) : Promise<void> {
-    if (process.argv.slice(2).find(element => element === 'scanner'))
+    if (args.find(element => element === 'scanner'))
         testScanner(ns);
 }
 
