@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { NS, ProcessInfo, Server } from '@ns'
+import { NS, Server } from '@ns'
 
 // Facade for NS server object. Responsible for preparing the server to be 
 // hacked, providing useful information on the server, its state, etc.
