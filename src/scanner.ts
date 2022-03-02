@@ -24,14 +24,12 @@ export class Scanner {
         });
     }
 
-     analyzeServers(servers: Array<string>): void {
+    analyzeServers(servers: Array<string>): void {
         const hackLevel = this.ns.getHackingLevel();
         for (let i = 0; i < servers.length; i++) {
             const hackRequired = this.ns.getServerRequiredHackingLevel(servers[i]);
-            if (servers[i] != 'home' && hackLevel >= hackRequired) {
-                this.serverList.push(
-                    new TargetServer(this.ns, servers[i])
-                );
+            if (servers[i] != 'home' && (hackLevel / 2) >= hackRequired) {
+                this.addOrUpdateServer(servers[i])
             }
             const nearest = this.ns.scan(servers[i]);
             if (servers[0] != 'home')
@@ -39,5 +37,13 @@ export class Scanner {
             if (nearest.length > 0)
                 this.analyzeServers(nearest);
         }
+    }
+
+    addOrUpdateServer(server: string): void {
+        const existing = this.serverList.find( ({ targetName }) => targetName === server );
+        if (existing === undefined)
+            this.serverList.push(new TargetServer(this.ns, server));
+        else
+            existing.deriveRating();
     }
 }
