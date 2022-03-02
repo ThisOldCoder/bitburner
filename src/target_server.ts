@@ -2,12 +2,13 @@ import { NS, Server } from '@ns'
 
 // Facade for NS server object. Responsible for preparing the server to be 
 // hacked, providing useful information on the server, its state, etc.
-export class HackableServer {
-	ns;			// Netscript handle
-	targetName; // Name of target server to hack
-	target;		// Target server to hack
-	player;		// Player object
-	cores;		// Cores available on script host
+export class TargetServer {
+	ns;				// Netscript handle
+	targetName; 	// Name of target server to hack
+	target;			// Target server to hack
+	player;			// Player object
+	cores;			// Cores available on script host
+	rating = 0;		// Estimating how fat this target is, higher is better
 
 	constructor (ns: NS, targetName: string, host?: Server) {
 		this.ns = ns;
@@ -20,6 +21,8 @@ export class HackableServer {
 		} else {
 			this.cores = host?.cpuCores;
 		}
+
+		this.deriveRating();
 	}
 
 	prepareServer(): void {
@@ -35,5 +38,15 @@ export class HackableServer {
 	
 	weakenFactor(): number {
 		return this.ns.weakenAnalyze(1, this.cores);
+	}
+
+	deriveRating(): void {
+        const hackLevel = this.ns.getHackingLevel();
+        const hackRequired = this.ns.getServerRequiredHackingLevel(this.targetName);
+		const maxMoney = this.ns.getServerMaxMoney(this.targetName);
+		const hackP = (hackLevel - hackRequired) / hackLevel;
+		const timeToWeaken = this.ns.formulas.hacking.weakenTime(this.target, this.player);
+		const hackC = this.ns.formulas.hacking.hackChance(this.target, this.player);
+		this.rating = maxMoney * hackP * hackC / timeToWeaken;
 	}
 }

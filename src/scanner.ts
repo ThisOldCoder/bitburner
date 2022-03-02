@@ -1,12 +1,16 @@
 import { NS } from '@ns'
+import { TargetServer } from '/target_server';
 
 export class Scanner {
-    ns;			        // Netscript handle
-    serverList = [];    // Periodically updated list of servers
+    ns;			                            // Netscript handle
+    serverList = Array<TargetServer>();     // Periodically updated list of servers
+    fourHours = 14400000;             // 4 hours in milliseconds
 
-    const fourHours = 14400000; // 4 hours in milliseconds
+    constructor (ns: NS) {
+        this.ns = ns;
+    }
 
-    scanLoop(): void {
+    async scanLoop(): Promise<void> {
         while (true) {
             this.scanServers();
             await this.ns.sleep(this.fourHours);
@@ -14,27 +18,20 @@ export class Scanner {
     }
 
     scanServers(): void {
-        analyzeServers(['home']);
-        serverList.sort(function(a, b) {
+        this.analyzeServers(['home']);
+        this.serverList.sort(function(a: TargetServer, b: TargetServer) {
             return b.rating - a.rating
         });
     }
 
      analyzeServers(servers: Array<string>): void {
-        const hackLevel = ns.getHackingLevel();
+        const hackLevel = this.ns.getHackingLevel();
         for (let i = 0; i < servers.length; i++) {
-            const hackRequired = ns.getServerRequiredHackingLevel(servers[i]);
+            const hackRequired = this.ns.getServerRequiredHackingLevel(servers[i]);
             if (servers[i] != 'home' && hackLevel >= hackRequired) {
-                const maxMoney = ns.getServerMaxMoney(servers[i]);
-                const hackP = (hackLevel - hackRequired) / hackLevel;
-                const timeToWeaken = ns.formulas.hacking.weakenTime(
-                    this.ns.getServer(servers[i]), this.ns.getPlayer());
-                const hackC = ns.formulas.hacking.hackChance(
-                    this.ns.getServer(servers[i]), this.ns.getPlayer());
-                this.serverList.push({
-                    server: servers[i],
-                    rating: maxMoney * hackP * hackC / timeToWeaken
-                })
+                this.serverList.push(
+                    new TargetServer(this.ns, servers[i])
+                );
             }
             const nearest = this.ns.scan(servers[i]);
             if (servers[0] != 'home')

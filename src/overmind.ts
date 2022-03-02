@@ -1,7 +1,7 @@
 import { NS, ProcessInfo, Server } from '@ns'
-import { HackableServer } from '/hackable_server'
+import { TargetServer } from '/target_server'
 
 export async function main(ns: NS) {
-	const hacker = new HackableServer(ns, 'the-hub');
+	const hacker = new TargetServer(ns, 'the-hub');
 	hacker.prepareServer();
 }
