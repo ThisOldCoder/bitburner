@@ -1,6 +1,7 @@
 import { NS, Server } from '@ns'
 import { notStrictEqual } from 'assert';
 import { Z_NO_FLUSH } from 'zlib';
+import { PlayerFacade } from '/scripts/player_facade';
 
 // Facade for NS server object. Responsible for preparing the server to be 
 // hacked, providing useful information on the server, its state, etc.
@@ -18,10 +19,8 @@ export class ServerFacade {
 		this.ns = ns;
 		this.serverName = serverName;
 		this.server = ns.getServer(serverName);
-		this.player = ns.getPlayer();
+		this.player = new PlayerFacade(ns);
 		this.cores = this.server.cpuCores;
-
-		this.deriveRating();
 	}
 
 	prepareServer(): void {
@@ -66,8 +65,8 @@ export class ServerFacade {
         const hackRequired = this.ns.getServerRequiredHackingLevel(this.serverName);
 		const maxMoney = this.ns.getServerMaxMoney(this.serverName);
 		const hackP = (hackLevel - hackRequired) / hackLevel;
-		const timeToWeaken = this.ns.formulas.hacking.weakenTime(this.server, this.player);
-		const hackC = this.ns.formulas.hacking.hackChance(this.server, this.player);
+		const timeToWeaken = this.ns.formulas.hacking.weakenTime(this.server, this.player.player);
+		const hackC = this.ns.formulas.hacking.hackChance(this.server, this.player.player);
 		this.rating = maxMoney * hackP * hackC / timeToWeaken;
 	}
 }
