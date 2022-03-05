@@ -1,5 +1,5 @@
 import { NS, ProcessInfo, Server } from '@ns'
-import { Scanner } from '/scanner';
+import { Scanner } from '/scripts/scanner';
 import { TargetServer } from '/scripts/target_server'
 
 class Overmind {
