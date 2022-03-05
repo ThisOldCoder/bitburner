@@ -1,1 +1,1 @@
-["scripts/sandboxes/sandbox3.js","scripts/test.js","scripts/scanner.js","scripts/overmind.js","scripts/watcher.js","scripts/thread_master.js","scripts/target_server.js"]
+["scripts/server_facade.js","scripts/sandboxes/sandbox3.js","scripts/test.js","scripts/scanner.js","scripts/overmind.js","scripts/watcher.js","scripts/thread_master.js","scripts/target_server.js"]

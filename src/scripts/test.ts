@@ -1,6 +1,6 @@
 import { NS } from '@ns'
 import { Scanner } from '/scripts/scanner'
-import { TargetServer } from '/scripts/target_server';
+import { TargetServer } from '/scripts/server_facade';
 
 export async function main(ns : NS) : Promise<void> {
     if (ns.args.find(element => element === 'scanner'))

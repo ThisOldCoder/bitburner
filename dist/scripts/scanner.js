@@ -1,4 +1,4 @@
-import { TargetServer } from '/scripts/target_server';
+import { TargetServer } from '/scripts/server_facade';
 export class Scanner {
     ns; // Netscript handle
     serverList = Array(); // Periodically updated list of servers
