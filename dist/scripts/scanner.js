@@ -1,4 +1,4 @@
-import { TargetServer } from '/scripts/server_facade';
+import { ServerFacade } from '/scripts/server_facade';
 export class Scanner {
     ns; // Netscript handle
     serverList = Array(); // Periodically updated list of servers
@@ -33,9 +33,9 @@ export class Scanner {
         }
     }
     addOrUpdateServer(server) {
-        const existing = this.serverList.find(({ targetName }) => targetName === server);
+        const existing = this.serverList.find(({ serverName }) => serverName === server);
         if (existing === undefined)
-            this.serverList.push(new TargetServer(this.ns, server));
+            this.serverList.push(new ServerFacade(this.ns, server));
         else
             existing.deriveRating();
     }

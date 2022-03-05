@@ -1,6 +1,5 @@
-import { NS, ProcessInfo, Server } from '@ns'
+import { NS } from '@ns'
 import { Scanner } from '/scripts/scanner';
-import { TargetServer } from '/scripts/server_facade'
 
 class Overmind {
     ns;			        // Netscript handle

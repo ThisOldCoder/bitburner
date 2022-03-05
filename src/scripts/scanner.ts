@@ -1,9 +1,9 @@
 import { NS } from '@ns'
-import { TargetServer } from '/scripts/server_facade'
+import { ServerFacade } from '/scripts/server_facade'
 
 export class Scanner {
     ns;			                            // Netscript handle
-    serverList = Array<TargetServer>();     // Periodically updated list of servers
+    serverList = Array<ServerFacade>();     // Periodically updated list of servers
     fourHours = 14400000;                   // 4 hours in milliseconds
 
     constructor (ns: NS) {
@@ -19,7 +19,7 @@ export class Scanner {
 
     scanServers(): void {
         this.analyzeServers(['home']);
-        this.serverList.sort(function(a: TargetServer, b: TargetServer) {
+        this.serverList.sort(function(a: ServerFacade, b: ServerFacade) {
             return b.rating - a.rating
         });
     }
@@ -40,9 +40,9 @@ export class Scanner {
     }
 
     addOrUpdateServer(server: string): void {
-        const existing = this.serverList.find( ({ targetName }) => targetName === server );
+        const existing = this.serverList.find( ({ serverName }) => serverName === server );
         if (existing === undefined)
-            this.serverList.push(new TargetServer(this.ns, server));
+            this.serverList.push(new ServerFacade(this.ns, server));
         else
             existing.deriveRating();
     }
