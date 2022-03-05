@@ -10,11 +10,13 @@ class Overmind {
 		this.scanner = new Scanner(this.ns);
 	}
 
-	start(): void {
+	async start(): Promise<void> {
+		await this.ns.sleep(3000);
 		this.ns.tprintf("Starting with " + this.scanner.serverList.length + " viable targets.");
 	}
 }
 
 export async function main(ns: NS): Promise<void> {
-	new Overmind(ns).start();
+	const overmind = new Overmind(ns)
+	await overmind.start();
 }
