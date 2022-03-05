@@ -1,4 +1,6 @@
 import { NS, Server } from '@ns'
+import { notStrictEqual } from 'assert';
+import { Z_NO_FLUSH } from 'zlib';
 
 // Facade for NS server object. Responsible for preparing the server to be 
 // hacked, providing useful information on the server, its state, etc.
@@ -6,10 +8,11 @@ import { NS, Server } from '@ns'
 export class ServerFacade {
 	ns;				// Netscript handle
 	serverName; 	// Name of server
-	server;			// Actual server object
+	server: Server;	// Actual server object
 	player;			// Player object
 	cores;			// Cores available
 	rating = 0;		// Estimating how fat this.server is, higher is better
+	openPorts = 0;	// Num of ports which have been hacked
 
 	constructor (ns: NS, serverName: string) {
 		this.ns = ns;
@@ -22,7 +25,29 @@ export class ServerFacade {
 	}
 
 	prepareServer(): void {
-		this.ns.tprintf('threads: ' + this.threadCountToWeaken());
+		this.hackPorts();
+	}
+
+	hackPorts(): void {
+		const hackPrograms = [
+			"BruteSSH.exe", "FTPCrack.exe", "relaySMTP.exe", "HTTPWorm.exe", "SQLInject.exe"];
+		for (let i = 0; i < hackPrograms.length; ++i) {
+			if (this.ns.fileExists(hackPrograms[i], "home")) {
+				if (i === 0 && !this.server.sshPortOpen)  { this.ns.brutessh(this.serverName);  }
+				if (i === 1 && !this.server.ftpPortOpen)  { this.ns.ftpcrack(this.serverName);  }
+				if (i === 2 && !this.server.smtpPortOpen) { this.ns.relaysmtp(this.serverName); }
+				if (i === 3 && !this.server.httpPortOpen) { this.ns.httpworm(this.serverName);  }
+				if (i === 4 && !this.server.sqlPortOpen)  { this.ns.sqlinject(this.serverName); }
+			}
+		}
+
+		this.openPorts = this.server.openPortCount;
+	}
+
+	isHackable(): boolean {
+		if (this.server.numOpenPortsRequired > this.server.openPortCount)
+			return false;
+		return true;
 	}
 
 	threadCountToWeaken(): number {
