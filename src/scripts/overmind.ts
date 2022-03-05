@@ -20,9 +20,11 @@ class Overmind {
 	}
 
 	async start(): Promise<void> {
-		this.scanner.scanServers();
 		this.ns.tprintf("Starting with " + this.hostList.length + " host(s).");
+
+		this.scanner.scanServers();
 		await this.ns.sleep(3000);
+		this.hostList = this.scanner.serverList();
 		this.ns.tprintf("Starting with " + this.targetList.length + " viable target(s).");
 	}
 
