@@ -8,6 +8,7 @@ class Overmind {
 	constructor(ns: NS) {
 		this.ns = ns;
 		this.scanner = new Scanner(this.ns);
+		this.scanner.scanServers();
 	}
 
 	async start(): Promise<void> {
