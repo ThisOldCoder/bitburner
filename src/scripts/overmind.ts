@@ -24,7 +24,7 @@ class Overmind {
 
 		this.scanner.scanServers();
 		await this.ns.sleep(3000);
-		this.targetList = this.scanner.serverList();
+		this.targetList = this.scanner.serverList;
 		this.ns.tprintf("Starting with " + this.targetList.length + " viable target(s).");
 	}
 
